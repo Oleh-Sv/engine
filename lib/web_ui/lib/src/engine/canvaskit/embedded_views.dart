@@ -488,8 +488,8 @@ class HtmlViewEmbedder {
           skiaSceneHost.insertBefore(platformViewRoot, elementToInsertBefore);
           final Surface? overlay = _overlays[viewId];
           if (overlay != null) {
-            skiaSceneHost.insertBefore(
-                overlay.htmlElement, elementToInsertBefore);
+            skiaSceneHost
+              .insertBefore(overlay.htmlElement, elementToInsertBefore);
           }
         } else {
           final DomElement platformViewRoot = _viewClipChains[viewId]!.root;
