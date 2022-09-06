@@ -322,6 +322,13 @@ class HtmlViewEmbedder {
           clipView.style.clipPath = '';
           headTransform = Matrix4.identity();
           clipView.style.transform = '';
+          // We need to set width and height for the clipView to cover the
+          // bounds of the path since browsers such as Safari and Edge
+          // seem to incorrectly intersect the element bounding rect with
+          // the clip path. Chrome and Firefox don't perform intersect instead they
+          // use the path itself as source of truth.
+          clipView.style.width = '100%';
+          clipView.style.height = '100%';
           if (mutator.rect != null) {
             final ui.Rect rect = mutator.rect!;
             clipView.style.clip = 'rect(${rect.top}px, ${rect.right}px, '
@@ -481,8 +488,8 @@ class HtmlViewEmbedder {
           skiaSceneHost.insertBefore(platformViewRoot, elementToInsertBefore);
           final Surface? overlay = _overlays[viewId];
           if (overlay != null) {
-            skiaSceneHost
-                .insertBefore(overlay.htmlElement, elementToInsertBefore);
+            skiaSceneHost.insertBefore(
+                overlay.htmlElement, elementToInsertBefore);
           }
         } else {
           final DomElement platformViewRoot = _viewClipChains[viewId]!.root;
