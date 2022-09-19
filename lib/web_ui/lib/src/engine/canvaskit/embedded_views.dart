@@ -323,10 +323,8 @@ class HtmlViewEmbedder {
           headTransform = Matrix4.identity();
           clipView.style.transform = '';
           // We need to set width and height for the clipView to cover the
-          // bounds of the path since browsers such as Safari and Edge
-          // seem to incorrectly intersect the element bounding rect with
-          // the clip path. Chrome and Firefox don't perform intersect instead they
-          // use the path itself as source of truth.
+          // bounds of the path since Safari seem to incorrectly intersect
+          // the  element bounding rect with the clip path.
           clipView.style.width = '100%';
           clipView.style.height = '100%';
           if (mutator.rect != null) {
