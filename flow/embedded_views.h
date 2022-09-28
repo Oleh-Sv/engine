@@ -154,7 +154,7 @@ class MutatorsStack {
   void PushClipPath(const SkPath& path);
   void PushTransform(const SkMatrix& matrix);
   void PushOpacity(const int& alpha);
-  void PushBackdropFilter(std::shared_ptr<const DlImageFilter> filter);
+  void PushBackdropFilter(const std::shared_ptr<const DlImageFilter>& filter);
 
   // Removes the `Mutator` on the top of the stack
   // and destroys it.
@@ -247,6 +247,11 @@ class EmbeddedViewParams {
   //
   // Clippings are ignored.
   const SkRect& finalBoundingRect() const { return final_bounding_rect_; }
+
+  // Pushes the stored DlImageFilter object to the mutators stack.
+  void PushImageFilter(std::shared_ptr<const DlImageFilter> filter) {
+    mutators_stack_.PushBackdropFilter(filter);
+  }
 
   // Whether the embedder should construct DisplayList objects to hold the
   // rendering commands for each between-view slice of the layer tree.
@@ -438,6 +443,18 @@ class ExternalViewEmbedder {
   // Whether it is used in this frame, returns true between 'BeginFrame' and
   // 'EndFrame', otherwise returns false.
   bool GetUsedThisFrame() const { return used_this_frame_; }
+
+  // Pushes the platform view id of a visited platform view to a list of
+  // visited platform views.
+  virtual void PushVisitedPlatformView(int64_t view_id) {}
+
+  // Pushes a DlImageFilter object to each platform view within a list of
+  // visited platform views.
+  //
+  // See also: |PushVisitedPlatformView| for pushing platform view ids to the
+  // visited platform views list.
+  virtual void PushFilterToVisitedPlatformViews(
+      std::shared_ptr<const DlImageFilter> filter) {}
 
  private:
   bool used_this_frame_ = false;

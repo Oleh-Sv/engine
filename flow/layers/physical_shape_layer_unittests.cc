@@ -278,10 +278,10 @@ TEST_F(PhysicalShapeLayerTest, ShadowNotDependsCtm) {
     SkRect baseline_bounds = DisplayListCanvasDispatcher::ComputeShadowBounds(
         path, elevation, 1.0f, SkMatrix());
     for (SkScalar scale : scales) {
-      for (SkScalar translateX : translates) {
-        for (SkScalar translateY : translates) {
+      for (SkScalar translate_x : translates) {
+        for (SkScalar translate_y : translates) {
           SkMatrix ctm;
-          ctm.setScaleTranslate(scale, scale, translateX, translateY);
+          ctm.setScaleTranslate(scale, scale, translate_x, translate_y);
           SkRect bounds = DisplayListCanvasDispatcher::ComputeShadowBounds(
               path, elevation, scale, ctm);
           EXPECT_FLOAT_EQ(bounds.fLeft, baseline_bounds.fLeft);
@@ -355,7 +355,7 @@ TEST_F(PhysicalShapeLayerTest, ShadowNotDependsPathSize) {
 
 static bool ReadbackResult(PrerollContext* context,
                            Clip clip_behavior,
-                           std::shared_ptr<Layer> child,
+                           const std::shared_ptr<Layer>& child,
                            bool before) {
   const SkMatrix initial_matrix = SkMatrix();
   const SkRect layer_bounds = SkRect::MakeXYWH(0.5, 1.0, 5.0, 6.0);
